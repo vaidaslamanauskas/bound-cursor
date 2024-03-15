@@ -1,0 +1,94 @@
+<html>
+<head>
+
+<style>
+  body {
+    background-color: peachpuff;
+  }
+
+  canvas {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    pointer-events: none;
+  }
+
+  #box {
+    background-color: violet;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    z-index: -1;
+  }
+</style>
+</head>
+<body>
+
+<div id="box"></div>
+  
+<script src="https://github.com/processing/p5.js/releases/download/1.1.9/p5.min.js"></script>
+<script>
+  let width = window.innerWidth
+  let height = window.innerHeight
+
+  let body = document.querySelector('body')  
+
+  //Checking for Reduced Motion Preference in JavaScript
+  const isReduced = window.matchMedia(`(prefers-reduced-motion: reduce)`) === true || window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true;
+
+  let hand;
+
+  function preload() {
+    hand = loadImage("https://www.artistsandhackers.org/assets/images/hand4.png");
+  }
+
+  function setup(){
+    createCanvas(width, height);
+
+  if (!isReduced) {
+    body.style.cursor = 'auto';
+  }
+
+    smooth();
+  }
+
+  function draw(){
+
+    if (!isReduced) {
+      clear()
+
+      noFill();
+      strokeWeight(5);
+      
+      // shape ..
+      beginShape();
+      
+      // Window corner w/ offset ..
+      vertex(width - 100, height - 100)
+      
+      // Making a curve ..
+      quadraticVertex(width / 2 - 50, height / 2 - 100, mouseX, mouseY);
+      endShape();
+
+      //let diffX = (width / 2) - mouseX;
+      //let diffY = mouseY - (height / 2);
+      let diffX = +mouseX;
+      let diffY = -mouseY;
+
+      angle = Math.atan2(diffY, diffX)
+      //console.log(an);
+
+      push()
+      angleMode(RADIANS)
+      translate(mouseX, mouseY)
+      rotate(-angle + radians(90));
+      image(hand,-33,-25,66,103)
+      pop()
+    }
+  }
+</script>
+</body>
+</html>
